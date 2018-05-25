@@ -1,13 +1,12 @@
 <template>
-	<div class="pagenation">
-		page is 
-		<ul>
-			<li @click="pre">
-				< </li>
-					<li v-for="item in show_page_numbers" :class="{active: item==current_index}" @click="setIndex(item)">{{item}}</li>
-					<li @click="next"> > </li>
-		</ul>
-	</div>
+
+	<ul class="pagenation">
+		<li @click="pre">
+			< </li>
+				<li v-for="item in show_page_numbers" :class="{active: item==current_index}" @click="setIndex(item)">{{item}}</li>
+				<li @click="next"> > </li>
+	</ul>
+
 </template>
 <script>
 	export default {
