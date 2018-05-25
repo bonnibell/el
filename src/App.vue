@@ -1,13 +1,27 @@
 <template>
 	<div id="app">
 
+		<el-row type="flex" class="row-bg" justify="space-between">
+			<el-col :span="12" style="text-align:left;">
+				<el-select v-model="selected" placeholder="请选择" @change="changeType">
+					<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+					</el-option>
+				</el-select>
+			</el-col>
+
+			<el-col :span="12" style="text-align:right;">
+				<ul style="margin: 0px; padding: 0px;">
+					<li v-for="item in options" style="display: inline-block;margin-left: 10px;">
+						<component :is='dynamic_ctl' :text="item.label" :custom_add='customAdd' keep-alive></component>
+					</li>
+				</ul>
+			</el-col>
+		</el-row>
+
 		<table>
 			<tr>
 				<td>
-					<el-select v-model="selected" placeholder="请选择" @change="changeType">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
+
 				</td>
 				<td>
 					<component v-bind:is="which_to_show" icon="el-icon-edit" type="primary" keep-alive>测试按钮</component>
@@ -20,11 +34,6 @@
 					</ul>
 				</td>
 				<td>
-					<ul>
-						<li v-for="item in options" style="display: inline-block;margin-left: 10px;">
-							<component :is='dynamic_ctl' :text="item.label" v-on:btnClickEvent='startHacking' keep-alive></component>
-						</li>
-					</ul>
 
 				</td>
 			</tr>
@@ -59,17 +68,22 @@
 			</el-table-column>
 			<el-table-column prop="word" label="姓名" width="180">
 			</el-table-column>
+		</el-table>
 
+		<el-table :data="tGridData" border style="width: 100%">
+			<el-table-column v-for="item in tcolumn" :prop="item.name" :label="item.title" width="180" header-align="center">
+			</el-table-column>
 		</el-table>
 	</div>
+
 </template>
 
 <script>
-	import one from './components/one.vue';
+	import dadd from './components/dem_add.vue';
 	import page from './components/page/page.vue';
 	export default {
 		components: {
-			'one': one,
+			'dem_add': dadd,
 			'pagenation': page
 		},
 
@@ -77,7 +91,19 @@
 			return {
 				msg: 'hello work',
 				which_to_show: 'el-button',
-				dynamic_ctl: 'one',
+				dynamic_ctl: 'dem_add',
+				tcolumn: [{
+						order: '1',
+						name: 'channel_id',
+						title: '编号'
+					}, {
+						order: '2',
+						name: 'word',
+						title: '标题'
+					}
+
+				],
+
 				tableData: [{
 					date: '2016-05-02',
 					name: '王小虎',
@@ -132,7 +158,18 @@
 					message: 'hahah',
 					duration: 5000
 				})
+
+				this.tcolumn.push({
+					order: '3',
+					name: 'sex',
+					title: '性别'
+
+				});
 			},
+			customAdd() {
+				alert('parent');
+			},
+
 			changeType(e) {
 				this.selected = e;
 				this.options.forEach(function(item, i) {
@@ -159,6 +196,7 @@
 					.catch(function(err) {
 						console.log(err)
 					})
+
 			}
 		}
 
@@ -174,5 +212,38 @@
 	ol li {
 		display: inline-block;
 		margin-left: 6px;
+	}
+	
+	.el-row {
+		margin: 4px;
+	}
+	
+	.el-col {
+		border-radius: 4px;
+	}
+	
+	.bg-purple-dark {
+		background: #99a9bf;
+	}
+	
+	.bg-purple {
+		background: #d3dce6;
+	}
+	
+	.bg-purple-light {
+		background: #e5e9f2;
+	}
+	
+	.grid-content {
+		border-radius: 4px;
+		min-height: 36px;
+	}
+	
+	.row-bg {
+		margin: 0px;
+		padding: 0px 4px 0px 4px;
+		padding-top: 6px;
+		padding-bottom: 6px;
+		background-color: #f9fafc;
 	}
 </style>
